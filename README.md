@@ -1,3 +1,3 @@
 # prawexample
 
-praw usage example
+praw usage example using text to speech from pyttsx3.
