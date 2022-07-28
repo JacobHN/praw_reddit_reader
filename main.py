@@ -1,6 +1,6 @@
 import praw
 from text_to_speech import TextToSpeech
-from key.config import client_secret, client_id
+from config import client_secret, client_id
 
 ts = TextToSpeech(1)
 
