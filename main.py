@@ -1,17 +1,20 @@
 import praw
-import pyttsx3
+from text_to_speech import TextToSpeech
 
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-engine.say("time to wait for the program fucker")
-engine.runAndWait()
+ts = TextToSpeech(1)
 
 reddit = praw.Reddit(client_id='QAuhXYE8V2hdDqfwFRGu7w',
                      client_secret='26bYFu-karUAS03kINKF6AxpKvcvWg',
                      user_agent='tutorial')
 
+# subreddit_name = input("enter subreddit(input is underscore and case sensitive):")
+subreddit = reddit.subreddit("relationship_advice").top(time_filter="day", limit=3)
 
+# file_name = input("input file name")
+f = open("text_files/test3.txt", "a")
+
+
+# traverse through the reply thread recursively
 def reply_thread(reply_adult):
     print("by " + reply_adult.author.name)
     print(reply_adult.body)
@@ -22,12 +25,6 @@ def reply_thread(reply_adult):
             reply_thread(reply_child)
 
 
-# subreddit_name = input("enter subreddit(input is underscore and case sensitive):")
-subreddit = reddit.subreddit("relationship_advice").top(time_filter="day", limit=3)
-
-# file_name = input("input file name")
-f = open("test3.txt", "a")
-
 for submission in subreddit:
     if submission.stickied:
         continue
@@ -37,15 +34,10 @@ for submission in subreddit:
     body = submission.selftext
     print(title)
 
-    engine.say(submission.author.name + " Posted " + title)
-    engine.runAndWait()
+    ts.speak(submission.author.name + " Posted " + title)
     print(body)
-    engine.say(body)
-    engine.runAndWait()
-    f.write(submission.url)
-    f.write(title)
-    f.write(body)
-    f.close()
+    ts.speak(body)
+    f.write(submission.url + "\n" + title + "\n" + body)
 
     submission.comments.replace_more(limit=None)
     for comment in submission.comments.list():
@@ -56,10 +48,12 @@ for submission in subreddit:
         print("-----------------------------")
         print(comment_author)
         print(single_comment)
-        engine.say(comment_author.name + " states " + single_comment)
-        engine.runAndWait()
+        ts.speak(comment_author.name + " states " + single_comment)
         if len(comment.replies) > 0:
             for reply in comment.replies:
                 print("----")
                 print("reply to " + comment.author.name)
                 reply_thread(reply)
+
+    ts.stop()
+    f.close()
