@@ -9,8 +9,8 @@ class TextToSpeech:
     rate = engine.getProperty('rate')
 
     # initiate text to speech engine
-    def __init__(self, voice_num):
-        self.engine.setProperty('voice', self.voices[voice_num].id)
+    def __init__(self):
+        self.engine.setProperty('voice', self.voices[1].id)
 
     # change voice from male to female or vice versa 0 for male 1 for female
     def change_voice(self, voice_num):
@@ -33,5 +33,6 @@ class TextToSpeech:
         self.engine.say(speech)
         self.engine.runAndWait()
 
+    # stops text to speech engine
     def stop(self):
         self.engine.stop()

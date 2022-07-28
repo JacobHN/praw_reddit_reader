@@ -2,7 +2,7 @@ import praw
 from text_to_speech import TextToSpeech
 from config import client_secret, client_id
 
-ts = TextToSpeech(1)
+ts = TextToSpeech()
 
 # create a reddit developer account to access praw features and input your given client_id and client_secret
 reddit = praw.Reddit(client_id=client_id,
