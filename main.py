@@ -1,22 +1,22 @@
 import praw
 from text_to_speech import TextToSpeech
+from key.config import client_secret, client_id
 
 ts = TextToSpeech(1)
 
-reddit = praw.Reddit(client_id='QAuhXYE8V2hdDqfwFRGu7w',
-                     client_secret='26bYFu-karUAS03kINKF6AxpKvcvWg',
+# create a reddit developer account to access praw features and input your given client_id and client_secret
+reddit = praw.Reddit(client_id=client_id,
+                     client_secret=client_secret,
                      user_agent='tutorial')
 
-# subreddit_name = input("enter subreddit(input is underscore and case sensitive):")
 subreddit = reddit.subreddit("relationship_advice").top(time_filter="day", limit=3)
-
-# file_name = input("input file name")
 f = open("text_files/test3.txt", "a")
 
 
 # traverse through the reply thread recursively
 def reply_thread(reply_adult):
-    print("by " + reply_adult.author.name)
+    if reply_adult.author.name is not None:
+        print("by " + reply_adult.author.name)
     print(reply_adult.body)
     if len(reply.replies) > 0:
         for reply_child in reply_adult.replies:
@@ -25,6 +25,7 @@ def reply_thread(reply_adult):
             reply_thread(reply_child)
 
 
+# loop through given reddit post, print post text, title, author. Then, text to speech post.
 for submission in subreddit:
     if submission.stickied:
         continue
